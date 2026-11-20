@@ -1,193 +1,43 @@
-# 🧠 Machine-KI-Dashboard
+# Machine-KI-Dashboard
 
-Ein interaktives Dashboard zur Visualisierung und KI-gestützten Analyse von Maschinendaten (Temperatur & Vibration). Entwickelt zur Demonstration moderner Anwendungsfälle im Sondermaschinenbau – mit Fokus auf **Künstliche Intelligenz**, **Visualisierung** und **digitale Schulungssysteme**.
+Ein persönliches Python-Demoprojekt von Eyüp Cindioglu zur Visualisierung simulierter Maschinenmesswerte. Das Dashboard zeigt Temperatur und Vibration als Zeitreihen und markiert auffällige Messpunkte in Rot. Mit Dash und Plotly habe ich die Datenaufbereitung und die interaktive Darstellung zu einer lokal lauffähigen Demo verbunden.
 
----
+![Vorschau des Dashboards mit Temperatur- und Vibrationsdiagramm](assets/dashboard_screenshot.png)
 
-## 👨‍🎓 Über mich
+## Lokal starten
 
-**Eyüp Cindioglu**  
-Studierender im Fachbereich **Informatik**  
-Hochschule Kempten  
-🔍 Bewerbung für ein Pflichtpraktikum bei **Bosch – Sondermaschinenbau (KI & Visualisierung)**
+Voraussetzung ist Python 3.12 mit Git.
 
----
-
-## 🎯 Ziel des Projekts
-
-Dieses Projekt zeigt praxisnah, wie man:
-
-- 📡 Maschinenzustände in Echtzeit überwacht  
-- 🤖 mit KI automatisch Anomalien erkennt  
-- 📊 ein modernes Dashboard für Bediener, Entwickler oder Schulungsteilnehmer gestaltet
-
----
-
-## 🔍 Funktionen im Überblick
-
-- **Live-Datenanzeige**: Automatisch aktualisierte Diagramme alle 5 Sekunden  
-- **Anomalieerkennung** mit KI (Isolation Forest)  
-- **Zwei Live-Diagramme**:  
-  - Temperaturverlauf mit Anomalien (blau + rot)  
-  - Vibrationsverlauf mit Anomalien (grün + rot)  
-- **Farbliche Hervorhebung**: Rote Punkte = erkannte Störungen  
-- **Zeitachse**: Realtime-Daten mit Zeitstempeln  
-- **Datenquelle anpassbar**: Eigene CSV-Dateien oder Echtzeitsimulation möglich  
-
----
-
-## 📸 Vorschau
-
-![Dashboard Screenshot](assets/dashboard_screenshot.png)
-
----
-
-## ⚙️ So benutzt du das Projekt
-
-### 1. Repository klonen
-
-```bash
+~~~bash
 git clone https://github.com/Trayute/machine-ki-dashboard.git
 cd machine-ki-dashboard
-```
+python -m venv .venv
+~~~
 
-### 2. Abhängigkeiten installieren
+Aktiviere die Umgebung mit `source .venv/bin/activate` (macOS/Linux) oder `.venv\Scripts\Activate.ps1` (Windows PowerShell).
 
-Am besten in einer virtuellen Umgebung:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Dashboard starten
-
-```bash
+~~~bash
+python -m pip install -r requirements.txt
 python dashboard.py
-```
+~~~
 
-🔗 Das Dashboard öffnet sich im Browser unter:  
-[http://127.0.0.1:8050/](http://127.0.0.1:8050/)
+Öffne [http://127.0.0.1:8050/](http://127.0.0.1:8050/). Der Start verwendet die mitgelieferte Beispieldatei.
 
----
+## Neue Beispieldaten erzeugen
 
-## 👀 Was du im Dashboard sehen kannst
-
-- 🔵 **Live-Temperaturverlauf** (blau)  
-- 🟢 **Live-Vibrationsverlauf** (grün)  
-- 🔴 **Anomalien** (rote Marker im Diagramm)  
-- 📅 **Zeitachse** mit Sekundengenauigkeit  
-- 📈 **KI-basierte Analyse**, live auf aktuellem Datenstrom
-
----
-
-## 🧪 Datenquelle
-
-Die Datei `data/machine_data_with_anomalies.csv` enthält:
-
-| Spalte       | Beschreibung                  |
-|--------------|-------------------------------|
-| `time`       | Zeitstempel                   |
-| `temperature`| Temperaturwert in °C          |
-| `vibration`  | Vibrationsstärke              |
-| `anomaly`    | `-1` = Anomalie, `1` = normal |
-
-### 👉 Eigene Daten simulieren?
-
-```bash
-python generate_dummy_data.py
-```
-
-Oder kontinuierlich im Hintergrund:
-
-```bash
+~~~bash
 python simulate_data.py
-```
+python analyze_data.py
+~~~
 
----
+Beide Befehle schreiben die jeweiligen CSV-Dateien im Ordner `data/` neu. Das Dashboard liest `data/machine_data_with_anomalies.csv` alle fünf Sekunden erneut ein.
 
-## 🧠 KI-Logik: Isolation Forest
+## Daten und Auswertung
 
-- Die Anomalieerkennung basiert auf dem **Isolation Forest**-Algorithmus aus `scikit-learn`.
-- Das Modell wird auf normalem Verhalten trainiert.
-- Danach erkennt es automatisch ungewöhnliche Werte (Ausreißer) in Temperatur & Vibration.
+| Datei | Aufgabe |
+| --- | --- |
+| `simulate_data.py` | Erzeugt synthetische Temperatur-, Vibrations- und Druckwerte mit künstlichen Ausreißern. |
+| `analyze_data.py` | Markiert Temperaturwerte über 85 °C oder Vibrationswerte über 0,04 als auffällig. |
+| `dashboard.py` | Zeigt Temperatur und Vibration mit Dash und Plotly. Rote Marker kennzeichnen Zeilen mit `anomaly = -1`. |
 
----
-
-## 📁 Projektstruktur
-
-```text
-machine-ki-dashboard/
-├── data/
-│   └── machine_data_with_anomalies.csv
-├── dashboard.py
-├── analyze_data.py
-├── generate_dummy_data.py
-├── simulate_data.py
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 📦 requirements.txt
-
-```txt
-dash==3.0.0
-pandas==2.2.2
-plotly==5.20.0
-scikit-learn==1.4.2
-```
-
-Installation:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 📌 Einsatzszenarien
-
-| Bereich                | Nutzen                                                  |
-|------------------------|---------------------------------------------------------|
-| 👷 Schulungen           | Echtzeit-Dashboard für Bedienerschulungen              |
-| 🧪 Tests & Entwicklung  | Anomalie-Erkennung mit simulierten Maschinendaten      |
-| 🛠️ Wartung & Diagnose   | Visualisierung von Störungen zur Ursachenanalyse       |
-| 📊 Industrie 4.0        | Darstellung und Interpretation von Maschinendatenströmen |
-| 🤖 KI-Demonstration     | Modellierung von KI-Anwendungen im Maschinenumfeld     |
-
----
-
-## 🤝 Motivation & Bewerbung
-
-Dieses Projekt demonstriert meine Fähigkeiten in:
-
-- **Künstlicher Intelligenz** (ML, Anomalie-Erkennung)  
-- **Visualisierung** mit Dash & Plotly  
-- **Datenanalyse & Simulation**  
-- **Systemintegration im industriellen Kontext**
-
-Es wurde speziell für eine Bewerbung bei **Bosch Immenstadt – Sondermaschinenbau** erstellt, mit dem Ziel, die **Zukunft der Standardisierung und digitalen Visualisierung aktiv mitzugestalten**.
-
----
-
-## 📬 Kontakt
-
-**Eyüp Cindioglu**  
-📍 Hochschule Kempten  
-✉️ eyupcindioglu@hotmail.com  
-🔗 [github.com/Trayute://github.com/Trayute
-
----
-
-## 📝 Lizenz
-
-**MIT License**  
-Freie Nutzung für Lern-, Forschungs- und Entwicklungszwecke.
-
----
-
-## 🔁 GitHub
-git remote add origin https://github.com/Trayute/machine-ki-dashboard.git
-git push -u origin main
-```
+Die Demo verwendet simulierte Daten und feste Schwellenwerte zur Anomalieerkennung.
